@@ -1,0 +1,32 @@
+version: '3.2'
+services:
+  apache:
+    image: apache:custom
+    ports:
+      - 80:80
+    volumes:
+      - ./laravel-vide:/var/www/html
+    networks:
+      - internal
+      - front
+
+  php:
+    image: php:custom
+    volumes:
+      - ./laravel-vide:/var/www/html
+    networks:
+      - internal
+
+  composer:
+    image: composer/composer
+    volumes:
+      - ./laravel-vide:/var/www/html
+    working_dir: /var/www/html
+    command: "install"
+    restart: "no"
+    depends_on:
+      - php
+      - apache
+networks:
+  internal:
+  front:
