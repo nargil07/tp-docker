@@ -1,5 +1,5 @@
 FROM ubuntu
-VOLUME ["/var/www/html"]
+
 RUN \
 	apt-get update -y && \
 	apt-get install -y --no-install-recommends apache2 libapache2-mod-fastcgi wget
@@ -10,6 +10,8 @@ RUN \
 
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod proxy_fcgi
+
+RUN chmod 777 -R /var/www/html
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD /usr/sbin/apache2ctl -D FOREGROUND
